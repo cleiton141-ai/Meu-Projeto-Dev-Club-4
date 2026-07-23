@@ -98,6 +98,100 @@
   .t-name{ font-weight:600; font-size:14px; }
   .t-role{ font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--text-faint); letter-spacing:.5px; margin-top:2px; }
 
+  /* ---- section shell shared by the new institutional blocks ---- */
+  .inst-section{ max-width:1100px; margin:0 auto 96px; }
+  .inst-head{ max-width:640px; margin-bottom:36px; }
+  .inst-head .eyebrow{ margin-bottom:16px; }
+  .inst-head h2{ font-family:'Space Grotesk',sans-serif; font-size:clamp(24px,3vw,34px); line-height:1.2; }
+  .inst-head p{ color:var(--text-dim); font-size:14.5px; line-height:1.65; margin-top:10px; }
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---- quem somos: rendered like an open source file being read ---- */
+  .manifesto-frame{ padding:0; overflow:hidden; }
+  .manifesto-tab{
+    display:flex; align-items:center; gap:10px; padding:12px 20px;
+    border-bottom:1px solid var(--border-dim); background:rgba(0,255,140,0.04);
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--text-dim);
+  }
+  .manifesto-tab .dots{ display:flex; gap:6px; }
+  .manifesto-tab .dots span{ width:8px; height:8px; border-radius:50%; background:var(--border-dim); }
+  .manifesto-body{ display:grid; grid-template-columns:44px 1fr; }
+  .manifesto-lines{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:2.15; color:var(--text-faint);
+    text-align:right; padding:26px 12px 26px 0; border-right:1px solid var(--border-dim); user-select:none;
+  }
+  .manifesto-code{ padding:26px 28px; font-family:'JetBrains Mono',monospace; font-size:14px; line-height:2.15; }
+  .manifesto-code .cm{ color:var(--text-faint); }
+  .manifesto-code .st{ color:var(--text); font-family:'Inter',sans-serif; font-size:15px; }
+  .manifesto-code p{ margin-bottom:6px; opacity:0; transform:translateX(-10px); transition:opacity .5s ease, transform .5s ease; }
+  .manifesto-code.in p{ opacity:1; transform:translateX(0); }
+  .manifesto-code p:nth-child(1){ transition-delay:.05s; }
+  .manifesto-code p:nth-child(2){ transition-delay:.15s; }
+  .manifesto-code p:nth-child(3){ transition-delay:.35s; }
+  .manifesto-code p:nth-child(4){ transition-delay:.45s; }
+  .manifesto-code p:nth-child(5){ transition-delay:.65s; }
+  .manifesto-code p:nth-child(6){ transition-delay:.75s; }
+
+  /* ---- formações: a real, ordered learning path ---- */
+  .trilha{ position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .trilha::before{
+    content:''; position:absolute; top:29px; left:6%; right:6%; height:1px;
+    background:linear-gradient(90deg, transparent, var(--border-bright) 10%, var(--border-bright) 90%, transparent);
+  }
+  .trilha-step{ position:relative; display:flex; flex-direction:column; gap:14px; }
+  .trilha-num{
+    width:58px; height:58px; z-index:1; display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:18px; color:#03170d;
+    background:linear-gradient(135deg,var(--green-3),var(--green-1));
+    clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  }
+  .trilha-step .t-head{ font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:600; }
+  .trilha-step .t-sub{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--green-1); letter-spacing:.5px; margin-top:2px; }
+  .trilha-step p{ color:var(--text-dim); font-size:12.5px; line-height:1.6; }
+
+  /* ---- empresas que contratam: scrolling proof-of-outcome ticker ---- */
+  .empresas-frame{ padding:0; overflow:hidden; }
+  .empresas-label{
+    display:flex; align-items:center; gap:10px; padding:14px 20px;
+    border-bottom:1px solid var(--border-dim); background:rgba(0,255,140,0.04);
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--green-1); letter-spacing:.5px;
+  }
+  .marquee{ position:relative; padding:28px 0; }
+  .marquee-track{ display:flex; gap:14px; width:max-content; animation:marquee 26s linear infinite; }
+  .marquee:hover .marquee-track{ animation-play-state:paused; }
+  .empresa-chip{
+    display:flex; align-items:center; gap:10px; padding:14px 22px; white-space:nowrap;
+    border:1px solid var(--border-dim); background:rgba(0,255,140,0.03);
+    clip-path:polygon(10px 0,100% 0,100% 100%,0 100%,0 10px);
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; color:var(--text-dim);
+  }
+  .empresa-chip .sq{ width:8px; height:8px; background:var(--green-1); box-shadow:0 0 6px var(--green-1); }
+  @keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+
+  /* ---- nossos tutores ---- */
+  .tutores{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .tutor-card{ text-align:left; }
+  .tutor-photo{
+    width:64px; height:64px; margin-bottom:16px; border:1px dashed var(--border-dim); background:rgba(0,255,140,0.03);
+    clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .tutor-photo img{ width:100%; height:100%; object-fit:cover; }
+  .tutor-photo svg{ width:26px; height:26px; stroke:var(--green-1); opacity:.6; }
+  .tutor-name{ font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:600; }
+  .tutor-role{ font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--green-1); letter-spacing:.5px; margin:4px 0 10px; }
+  .tutor-card p.dim{ font-size:12.5px; }
+
+  @media (max-width:980px){
+    .trilha{ grid-template-columns:1fr; }
+    .trilha::before{ display:none; }
+    .tutores{ grid-template-columns:1fr; }
+    .manifesto-body{ grid-template-columns:32px 1fr; }
+    .manifesto-code{ padding:20px 16px; font-size:13px; }
+    .manifesto-code .st{ font-size:13.5px; }
+  }
+
   @media (max-width:980px){
     header{display: none;}
     .hero{ grid-template-columns:1fr; padding-top:30px; }
@@ -265,47 +359,201 @@
 </section>
 
 
-      
-
-<section class="depoimentos" style="padding: 3rem 1.5rem; background: #0A1F14;">
-  <h2 style="text-align:center; color:#C0DD97; font-size:24px; margin-bottom: 2rem;">
-    O que nossos alunos dizem
-  </h2>
-
-  <div class="depoimentos-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px; max-width:1000px; margin:0 auto;">
-
-    <div class="depoimento-card" style="background:#12301F; border-radius:12px; padding:1.5rem; text-align:center;">
-      <div class="depoimento-avatar" style="width:72px; height:72px; border-radius:50%; overflow:hidden; margin:0 auto 12px; border:2px solid #639922;">
-        <img src="assets/a6.png" alt="Depoimento de aluno" style="width:100%; height:100%; object-fit:cover; ">
-      </div>
-      <p style="color:#f2f3f0; font-size:14px; line-height:1.5; margin:0 0 10px;">"Mudou completamente minha carreira, hoje trabalho como dev."</p>
-      <p style="color:#97C459; font-size:13px; font-weight:600; margin:0;">Rafael C.</p>
+<!-- ============ QUEM SOMOS ============ -->
+<section>
+  <div class="inst-section reveal">
+    <div class="inst-head">
+      <div class="eyebrow"><span class="dot"></span> quem somos</div>
+      <h2>Não somos curso de plataforma. Somos o time que fica até você ser contratado.</h2>
     </div>
-
-    <div class="depoimento-card" style="background:#12301F; border-radius:12px; padding:1.5rem; text-align:center;">
-      <div class="depoimento-avatar" style="width:72px; height:72px; border-radius:50%; overflow:hidden; margin:0 auto 12px; border:2px solid #639922;">
-        <img src="assets/a7.png" alt="Depoimento de aluna" style="width:100%; height:100%; object-fit:cover; ">
+    <div class="hud-frame manifesto-frame">
+      <div class="manifesto-tab">
+        <span class="dots"><span></span><span></span><span></span></span>
+        <span>~/devclub/manifesto.md</span>
       </div>
-      <p style="color:#EAF3DE; font-size:14px; line-height:1.5; margin:0 0 10px;">"As aulas são muito claras, sinto que evoluí rápido."</p>
-      <p style="color:#97C459; font-size:13px; font-weight:600; margin:0;">Mariana S.</p>
-    </div>
-
-    <div class="depoimento-card" style="background:#12301F; border-radius:12px; padding:1.5rem; text-align:center;">
-      <div class="depoimento-avatar" style="width:72px; height:72px; border-radius:50%; overflow:hidden; margin:0 auto 12px; border:2px solid #639922;">
-        <img src="assets/a8.png" alt="Depoimento de aluno" style="width:100%; height:100%; object-fit:cover; ">
+      <div class="manifesto-body">
+        <div class="manifesto-lines">01<br>02<br>03<br>04<br>05<br>06</div>
+        <div class="manifesto-code" id="manifestoCode">
+          <p><span class="cm">// por que existimos</span></p>
+          <p class="st">Ensinamos gente comum a programar de verdade — sem enrolação, sem certificado pra enquadrar na parede.</p>
+          <p><span class="cm">// como ensinamos</span></p>
+          <p class="st">Projeto real, mentor de carne e osso, feedback direto na sua entrega — não vídeo gravado em 2019.</p>
+          <p><span class="cm">// o que você leva</span></p>
+          <p class="st">Um portfólio pronto pra defender em entrevista, e alguém do seu lado até a proposta chegar.</p>
+        </div>
       </div>
-      <p style="color:#EAF3DE; font-size:14px; line-height:1.5; margin:0 0 10px;">"Recomendo muito, o suporte da equipe é excelente."</p>
-      <p style="color:#97C459; font-size:13px; font-weight:600; margin:0;">Diego A.</p>
     </div>
+  </div>
+</section>
 
-    <div class="depoimento-card" style="background:#12301F; border-radius:12px; padding:1.5rem; text-align:center;">
-      <div class="depoimento-avatar" style="width:72px; height:72px; border-radius:50%; overflow:hidden; margin:0 auto 12px; border:2px solid #639922;">
-        <img src="assets/a9.png" alt="Depoimento de aluna" style="width:100%; height:100%; object-fit:cover; ">
+<!-- ============ FORMAÇÕES ============ -->
+<section>
+  <div class="inst-section reveal">
+    <div class="inst-head">
+      <div class="eyebrow"><span class="dot"></span> as formações</div>
+      <h2>Uma trilha, quatro etapas, uma vaga no fim.</h2>
+      <p>Cada módulo entrega um resultado concreto — não uma lista de tópicos pra decorar.</p>
+    </div>
+    <div class="trilha">
+      <div class="trilha-step">
+        <div class="trilha-num">01</div>
+        <div>
+          <div class="t-head">Fundamentos</div>
+          <div class="t-sub">HTML · CSS · LÓGICA</div>
+        </div>
+        <p>Sua primeira página no ar, do zero, sem framework escondendo o que está acontecendo.</p>
       </div>
-      <p style="color:#EAF3DE; font-size:14px; line-height:1.5; margin:0 0 10px;">"Consegui meu primeiro emprego como dev logo depois do curso."</p>
-      <p style="color:#97C459; font-size:13px; font-weight:600; margin:0;">Julia L.</p>
+      <div class="trilha-step">
+        <div class="trilha-num">02</div>
+        <div>
+          <div class="t-head">JavaScript</div>
+          <div class="t-sub">DOM · EVENTOS · APIS</div>
+        </div>
+        <p>Uma aplicação interativa de verdade, consumindo API real no navegador.</p>
+      </div>
+      <div class="trilha-step">
+        <div class="trilha-num">03</div>
+        <div>
+          <div class="t-head">Back-end</div>
+          <div class="t-sub">NODE · BANCO DE DADOS</div>
+        </div>
+        <p>Uma API completa, com autenticação e persistência, rodando de ponta a ponta.</p>
+      </div>
+      <div class="trilha-step">
+        <div class="trilha-num">04</div>
+        <div>
+          <div class="t-head">Carreira</div>
+          <div class="t-sub">PORTFÓLIO · ENTREVISTA</div>
+        </div>
+        <p>Portfólio organizado, LinkedIn revisado e simulação de entrevista com mentor.</p>
+      </div>
     </div>
+  </div>
+</section>
 
+<!-- ============ NOSSOS TUTORES ============ -->
+<section>
+  <div class="inst-section reveal">
+    <div class="inst-head">
+      <div class="eyebrow"><span class="dot"></span> nossos tutores</div>
+      <h2>Mentoria com quem programa todo dia, não com quem só ensina.</h2>
+    </div>
+    <div class="tutores">
+      <!-- Substitua nome, cargo e foto pelos dados reais de cada mentor -->
+      <div class="hud-panel tutor-card">
+        <div class="tutor-photo">
+          <!-- <img src="assets/mentor-1.jpg" alt="Foto do mentor"> -->
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        </div>
+        <div class="tutor-name">Nome do mentor</div>
+        <div class="tutor-role">FRONT-END · UI ENGINEERING</div>
+        <p class="dim">Acompanha os módulos de Fundamentos e JavaScript, corrigindo código linha a linha.</p>
+      </div>
+      <div class="hud-panel tutor-card">
+        <div class="tutor-photo">
+          <!-- <img src="assets/mentor-2.jpg" alt="Foto do mentor"> -->
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        </div>
+        <div class="tutor-name">Nome do mentor</div>
+        <div class="tutor-role">BACK-END · APIS</div>
+        <p class="dim">Responsável pelo módulo de Back-end e pela revisão dos projetos com banco de dados.</p>
+      </div>
+      <div class="hud-panel tutor-card">
+        <div class="tutor-photo">
+          <!-- <img src="assets/mentor-3.jpg" alt="Foto do mentor"> -->
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        </div>
+        <div class="tutor-name">Nome do mentor</div>
+        <div class="tutor-role">CARREIRA · RECRUTAMENTO</div>
+        <p class="dim">Conduz a simulação de entrevista e a revisão de currículo e LinkedIn.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EMPRESAS QUE CONTRATAM ============ -->
+<section>
+  <div class="inst-section reveal">
+    <div class="inst-head">
+      <div class="eyebrow"><span class="dot"></span> empresas que contratam</div>
+      <h2>É pra essas vagas que a trilha foi desenhada.</h2>
+    </div>
+    <!-- Substitua os nomes abaixo pelas empresas reais que contrataram seus alunos -->
+    <div class="hud-frame empresas-frame">
+      <div class="empresas-label"><span>$</span><span>tail -f contratacoes.log</span></div>
+      <div class="marquee">
+        <div class="marquee-track" id="empresasTrack">
+          <span class="empresa-chip"><span class="sq"></span>Empresa Alpha</span>
+          <span class="empresa-chip"><span class="sq"></span>Empresa Beta</span>
+          <span class="empresa-chip"><span class="sq"></span>Empresa Gama</span>
+          <span class="empresa-chip"><span class="sq"></span>Empresa Delta</span>
+          <span class="empresa-chip"><span class="sq"></span>Empresa Épsilon</span>
+          <span class="empresa-chip"><span class="sq"></span>Empresa Zeta</span>
+          <span class="empresa-chip" aria-hidden="true"><span class="sq"></span>Empresa Alpha</span>
+          <span class="empresa-chip" aria-hidden="true"><span class="sq"></span>Empresa Beta</span>
+          <span class="empresa-chip" aria-hidden="true"><span class="sq"></span>Empresa Gama</span>
+          <span class="empresa-chip" aria-hidden="true"><span class="sq"></span>Empresa Delta</span>
+          <span class="empresa-chip" aria-hidden="true"><span class="sq"></span>Empresa Épsilon</span>
+          <span class="empresa-chip" aria-hidden="true"><span class="sq"></span>Empresa Zeta</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <div class="inst-section reveal">
+    <div class="inst-head">
+      <div class="eyebrow"><span class="dot"></span> nossos alunos</div>
+      <h2>O que quem passou pela trilha tem a dizer.</h2>
+    </div>
+    <div class="testimonials">
+      <div class="hud-panel testimonial-card">
+        <span class="t-quote-mark">"</span>
+        <p class="quote">Mudou completamente minha carreira, hoje trabalho como dev.</p>
+        <div class="t-person">
+          <div class="t-avatar"><img src="assets/a6.png" alt="Rafael C." style="width:100%;height:100%;object-fit:cover;clip-path:inherit;"></div>
+          <div>
+            <div class="t-name">Rafael C.</div>
+            <div class="t-role">EX-ALUNO · TURMA 22</div>
+          </div>
+        </div>
+      </div>
+      <div class="hud-panel testimonial-card">
+        <span class="t-quote-mark">"</span>
+        <p class="quote">As aulas são muito claras, sinto que evoluí rápido.</p>
+        <div class="t-person">
+          <div class="t-avatar"><img src="assets/a7.png" alt="Mariana S." style="width:100%;height:100%;object-fit:cover;clip-path:inherit;"></div>
+          <div>
+            <div class="t-name">Mariana S.</div>
+            <div class="t-role">EX-ALUNA · TURMA 23</div>
+          </div>
+        </div>
+      </div>
+      <div class="hud-panel testimonial-card">
+        <span class="t-quote-mark">"</span>
+        <p class="quote">Recomendo muito, o suporte da equipe é excelente.</p>
+        <div class="t-person">
+          <div class="t-avatar"><img src="assets/a8.png" alt="Diego A." style="width:100%;height:100%;object-fit:cover;clip-path:inherit;"></div>
+          <div>
+            <div class="t-name">Diego A.</div>
+            <div class="t-role">EX-ALUNO · TURMA 23</div>
+          </div>
+        </div>
+      </div>
+      <div class="hud-panel testimonial-card">
+        <span class="t-quote-mark">"</span>
+        <p class="quote">Consegui meu primeiro emprego como dev logo depois do curso.</p>
+        <div class="t-person">
+          <div class="t-avatar"><img src="assets/a9.png" alt="Julia L." style="width:100%;height:100%;object-fit:cover;clip-path:inherit;"></div>
+          <div>
+            <div class="t-name">Julia L.</div>
+            <div class="t-role">EX-ALUNA · TURMA 24</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -354,6 +602,24 @@
     brightEl.style.setProperty('--my', '-20%');
   });
   brightEl.style.setProperty('--my', '-20%');
+
+  // ---------- scroll reveal for the institutional sections ----------
+  // ativa a classe "in" quando a seção entra na tela, e no bloco do manifesto
+  // dispara a revelação linha a linha do "código" (efeito de leitura de arquivo)
+  const revealEls = document.querySelectorAll('.reveal');
+  const manifestoCode = document.getElementById('manifestoCode');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        if (entry.target.contains(manifestoCode)) {
+          manifestoCode.classList.add('in');
+        }
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => revealObserver.observe(el));
 </script>
 </body>
 </html>
