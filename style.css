@@ -231,6 +231,14 @@ footer{
 @media (max-width:980px){
   .mobile-back{ display:inline-flex; }
   header{display: none;}
+  body, .page-head, .page-head h1, .page-head p,
+  .hud-panel, .hud-frame, .hud-tab, .stack,
+  .grid-2, .grid-3, .grid-2c, .cta-row,
+  .check-item p, .project-link, .media-slot span{
+    min-width:0;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+  }
   .grid-2{ grid-template-columns:1fr; }
   .grid-3{ grid-template-columns:1fr; }
   .grid-2c{ grid-template-columns:1fr; }
