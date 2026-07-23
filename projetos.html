@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projetos — DEV CLUB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .project-card{ display:flex; flex-direction:column; gap:14px; }
+  .project-card .media-slot{ aspect-ratio:4/3; }
+  .project-tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+  .project-tags span{
+    font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.5px;
+    color:var(--green-1); border:1px solid var(--border-dim); padding:3px 9px;
+    clip-path:polygon(5px 0,100% 0,100% 100%,0 100%,0 5px);
+  }
+  .project-link{ margin-top:6px; font-size:13px; font-weight:600; color:var(--green-1); display:inline-flex; align-items:center; gap:6px; }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="grid-lines"></div>
+<div class="scanlines"></div>
+
+<div class="hud-topbar">
+  <span class="seg live"><span class="d"></span>portfólio ativo</span>
+  <span class="seg">12 projetos publicados</span>
+  <span class="spacer"></span>
+  <span class="seg">devclub.com.br/projetos</span>
+</div>
+
+<header>
+  <div class="logo"><span class="gradient-text">DEV</span> CLUB</div>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+  <nav id="siteNav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="aulas.html">Aulas</a></li>
+      <li><a href="projetos.html">Projetos</a></li>
+      <li><a href="linkedin.html">LinkedIn</a></li>
+      <li><a href="curriculo.html">Currículo</a></li>
+    </ul>
+  </nav>
+  <a href="linkedin.html" class="btn btn-solid">Inscrever-se</a>
+</header>
+
+<div class="page-head">
+  <div class="eyebrow">portfólio de peso</div>
+  <h1>Projetos <span class="gradient-text">reais</span>, prontos pra impressionar recrutadores</h1>
+  <p>Saia do curso com aplicações completas no seu portfólio — não só exercícios de sala de aula. Cada card abaixo é um projeto que você constrói do zero.</p>
+</div>
+
+<section>
+  <!-- ---------- spotlight project ---------- -->
+  <div class="hud-frame" style="max-width:1100px; margin:0 auto 40px;">
+    <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+    <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+    <span class="readout tl mono">PROJETO EM DESTAQUE</span>
+    <span class="readout tr mono">TURMA 24</span>
+    <div class="grid-2c" style="margin-top:22px;">
+      <div class="media-slot">
+        <!-- Substitua por: <img src="projeto-destaque.jpg" alt="Screenshot do projeto"> ou um <video> de demonstração -->
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Espaço reservado para print ou vídeo de demonstração do projeto</span>
+        <video width="640" height="360" controls>
+  <source src="assets/video/v1.mp4" type="video/mp4">
+  Seu navegador não suporta a tag de vídeo.
+</video>
+      </div>
+      <div>
+        <h3 class="card-title" style="font-size:22px;">E-commerce completo, do carrinho ao checkout</h3>
+        <p class="dim">Aplicação full-stack construída durante o módulo de Back-end: catálogo, carrinho, autenticação e painel administrativo.</p>
+        <div class="project-tags"><span>React</span><span>Node.js</span><span>PostgreSQL</span></div>
+        <a href="#" class="project-link">Ver repositório →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- project grid ---------- -->
+  <div class="grid-3" style="max-width:1100px; margin:0 auto;">
+    <div class="hud-panel project-card">
+      <div class="media-slot">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Imagem do projeto</span>
+        <img src="assets/b3.png" alt="Dashboard">
+      </div>
+      <div>
+        <h3 class="card-title">Dashboard financeiro</h3>
+        <p class="dim">Painel de controle de gastos com gráficos em tempo real.</p>
+        <div class="project-tags"><span>JavaScript</span><span>Chart.js</span></div>
+        <a href="#" class="project-link">Ver projeto →</a>
+      </div>
+    </div>
+
+    <div class="hud-panel project-card">
+      <div class="media-slot">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Imagem do projeto</span>
+        <img src="assets/b4.png">
+      </div>
+      <div>
+        <h3 class="card-title">App de tarefas colaborativo</h3>
+        <p class="dim">Gerenciador de tarefas em tempo real com múltiplos usuários.</p>
+        <div class="project-tags"><span>React</span><span>Firebase</span></div>
+        <a href="#" class="project-link">Ver projeto →</a>
+      </div>
+    </div>
+
+    <div class="hud-panel project-card">
+      <div class="media-slot">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Imagem do projeto</span>
+        <img src="assets/b5.png">
+      </div>
+      <div>
+        <h3 class="card-title">API de reservas</h3>
+        <p class="dim">Back-end completo com autenticação e documentação.</p>
+        <div class="project-tags"><span>Node.js</span><span>MongoDB</span></div>
+        <a href="#" class="project-link">Ver projeto →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo" style="font-size:15px;"><span class="gradient-text">DEV</span> CLUB</div>
+  <div>© 2026 DevClub. Todos os direitos reservados.</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

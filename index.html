@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEV CLUB — O caminho mais rápido entre o seu código e a sua contratação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ---- hero / orbit visual (unique to the home page) ---- */
+  .hero{
+    display:grid; grid-template-columns:1fr 1fr; align-items:center;
+    gap:40px; padding:56px 5vw 40px; min-height:82vh;
+  }
+  .hero h1{ font-family:'Space Grotesk',sans-serif; font-size:clamp(34px,4vw,52px); line-height:1.12; font-weight:700; letter-spacing:-.5px; margin-bottom:22px; }
+  .hero p.lead{ color:var(--text-dim); font-size:17px; line-height:1.65; max-width:480px; margin-bottom:34px; }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+
+  .visual{ position:relative; height:600px; display:flex; align-items:center; justify-content:center; }
+  .orbit-field{ position:relative; width:520px; height:520px; }
+  .orbit-guide{ position:absolute; inset:0; border-radius:50%; border:1px dashed rgba(0,255,140,0.18); }
+  .orbit-guide.inner{ inset:70px; border-color:rgba(0,255,140,0.1); }
+
+  .orbiter{ position:absolute; inset:0; animation-name:orbitspin; animation-duration:var(--dur,40s); animation-delay:var(--delay,0s); animation-timing-function:linear; animation-iteration-count:infinite; }
+  @keyframes orbitspin{ to{ transform:rotate(360deg); } }
+  .orbit-field:hover .orbiter{ animation-play-state:paused; }
+  .orbit-card{ position:absolute; top:50%; left:50%; }
+  .orbit-counter-static{ display:block; }
+  .orbit-counter-spin{ display:block; animation-name:orbitspin; animation-duration:var(--dur,40s); animation-delay:var(--delay,0s); animation-timing-function:linear; animation-iteration-count:infinite; animation-direction:reverse; }
+  .orbit-field:hover .orbit-counter-spin{ animation-play-state:paused; }
+  .orbit-card-face-wrap{ display:block; width:126px; margin-left:-63px; margin-top:-40px; }
+
+  .card-face .photo{
+  width:34px; height:34px;
+  border-radius:6px;
+  overflow:hidden;
+  flex:none;
+}
+.card-face .photo img{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+  .card-face{
+    display:flex; flex-direction:column; align-items:flex-start; gap:8px;
+    background:linear-gradient(160deg, rgba(11,23,18,0.95), rgba(6,56,32,0.55));
+    border:1px solid var(--border-dim);
+    clip-path:polygon(12px 0,100% 0,100% 100%,0 100%,0 12px);
+    padding:14px; box-shadow:0 8px 24px rgba(0,0,0,0.45);
+    transition:transform .25s, border-color .25s, box-shadow .25s;
+  }
+  .card-face:hover{ transform:translateY(-4px); border-color:var(--green-1); box-shadow:0 12px 30px rgba(0,255,140,0.2); }
+  .card-face .icon{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--green-3),var(--green-1)); clip-path:polygon(6px 0,100% 0,100% 100%,0 100%,0 6px); }
+  .card-face .icon svg{ width:18px; height:18px; stroke:#03170d; }
+  .card-face .label{ font-size:12.5px; font-weight:600; color:var(--text); }
+  .card-face .sub{ font-size:10.5px; color:var(--text-faint); }
+
+  .laptop-wrap{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:300px; z-index:5; }
+  .laptop-screen-body{ background:linear-gradient(160deg,#0c1a13,#05100a); border:2px solid #163a27; border-radius:14px 14px 4px 4px; padding:8px; box-shadow:0 20px 60px rgba(0,0,0,0.6), 0 0 60px rgba(0,255,140,0.08); }
+  .screen{ position:relative; background:#020604; border-radius:6px; height:180px; overflow:hidden; cursor:none; border:1px solid rgba(0,255,140,0.08); }
+  .screen-inner{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:30px; letter-spacing:1px; }
+  .screen-dim{ color:rgba(0,180,110,0.16); }
+  .screen-bright{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(90deg,var(--green-1),var(--lime)); -webkit-background-clip:text; background-clip:text; color:transparent;
+    -webkit-mask-image:radial-gradient(circle 90px at var(--mx,50%) var(--my,50%), black 0%, transparent 75%);
+    mask-image:radial-gradient(circle 90px at var(--mx,50%) var(--my,50%), black 0%, transparent 75%);
+    text-shadow:0 0 24px rgba(0,255,140,0.6);
+  }
+  .cursor-blink{ animation:blink 1s step-end infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+  .screen-scanline{ position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg, rgba(0,255,140,0.03) 0px, transparent 1px, transparent 3px); }
+  .screen-caption{ display:flex; align-items:center; justify-content:space-between; padding:8px 4px 2px; font-family:'JetBrains Mono',monospace; font-size:9.5px; color:var(--text-faint); }
+  .screen-caption .live{ display:flex; align-items:center; gap:6px; color:var(--green-1); }
+  .screen-caption .live .d{ width:5px;height:5px;border-radius:50%; background:var(--green-1); box-shadow:0 0 6px var(--green-1); }
+  .keyboard-base{ width:340px; height:14px; margin:0 auto; margin-left:-20px; background:linear-gradient(180deg,#0e1f16,#081209); clip-path:polygon(4% 0,96% 0,100% 100%,0% 100%); border-bottom:2px solid #163a27; }
+  .laptop-shadow{ width:280px; height:22px; margin:14px auto 0; background:radial-gradient(ellipse at center, rgba(0,255,140,0.25), transparent 70%); filter:blur(4px); }
+
+  .quick-links{ max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .quick-links a.hud-panel{ display:flex; flex-direction:column; gap:6px; }
+  .quick-links .q-icon{ width:30px; height:30px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--green-3),var(--green-1)); clip-path:polygon(6px 0,100% 0,100% 100%,0 100%,0 6px); margin-bottom:6px; }
+  .quick-links .q-icon svg{ width:16px; height:16px; stroke:#03170d; }
+
+  .testimonials{ max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(2,1fr); gap:22px; }
+  .testimonial-card{ display:flex; flex-direction:column; gap:14px; }
+  .t-quote-mark{ font-family:'Space Grotesk',sans-serif; font-size:40px; line-height:1; color:var(--green-1); opacity:.5; }
+  .testimonial-card p.quote{ color:var(--text-dim); font-size:14px; line-height:1.7; }
+  .t-person{ display:flex; align-items:center; gap:12px; margin-top:4px; }
+  .t-avatar{
+    width:44px; height:44px; flex:none; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--green-3),var(--green-1)); color:#03170d;
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px;
+    clip-path:polygon(9px 0,100% 0,100% 100%,0 100%,0 9px);
+  }
+  .t-name{ font-weight:600; font-size:14px; }
+  .t-role{ font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--text-faint); letter-spacing:.5px; margin-top:2px; }
+
+  @media (max-width:980px){
+    header{display: none;}
+    .hero{ grid-template-columns:1fr; padding-top:30px; }
+    .visual{ height:520px; }
+    .orbit-field{ width:400px; height:400px; }
+    .quick-links{ grid-template-columns:1fr 1fr; }
+    .testimonials{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="grid-lines"></div>
+<div class="scanlines"></div>
+
+<div class="hud-topbar">
+  <span class="seg live"><span class="d"></span>sistema online</span>
+  <span class="seg">turma 24 · vagas abertas</span>
+  <span class="spacer"></span>
+  <span class="seg">devclub.com.br</span>
+</div>
+
+<header>
+  <div class="logo"><span class="gradient-text">DEV</span> CLUB</div>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="siteNav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="aulas.html">Aulas</a></li>
+      <li><a href="projetos.html">Projetos</a></li>
+      <li><a href="linkedin.html">LinkedIn</a></li>
+      <li><a href="curriculo.html">Currículo</a></li>
+    </ul>
+  </nav>
+  <a href="linkedin.html" class="btn btn-solid">Inscrever-se</a>
+</header>
+
+<section class="hero" style="padding-bottom:0;">
+  <div class="hero-copy">
+    <div class="page-head" style="padding:0;">
+      <div class="eyebrow"><span class="dot"></span> metodologia 100% prática</div>
+      <h1>O caminho mais rápido entre o seu <span class="gradient-text">código</span> e a sua <span class="gradient-text">contratação</span>.</h1>
+      <p class="lead">No DevClub, você aprende com uma metodologia 100% prática, cria projetos reais e recebe o suporte necessário para conquistar sua primeira vaga como programador.</p>
+    </div>
+    <div class="cta-row">
+      <a href="linkedin.html" class="btn btn-solid">Inscrever-se na Próxima Turma</a>
+      <a href="https://wa.me/" class="btn btn-outline">Falar com um Consultor no WhatsApp</a>
+    </div>
+  </div>
+
+  <div class="visual">
+    <div class="orbit-field" id="orbitField">
+      <div class="orbit-guide"></div>
+      <div class="orbit-guide inner"></div>
+
+      <div class="orbiter" style="--dur:34s; --delay:0s;">
+        <div class="orbit-card" style="transform:rotate(10deg) translateY(-225px);">
+          <div class="orbit-counter-static" style="transform:rotate(-10deg);">
+            <div class="orbit-counter-spin" style="--dur:34s; --delay:0s;">
+              <a href="index.html" class="orbit-card-face-wrap">
+                <div class="card-face">
+                  <div class="" class="photo"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
+                  <img src="assets/b11.png" alt="#">
+                  <div class="label">Home</div>
+                  <div class="sub">visão geral</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="orbiter" style="--dur:46s; --delay:-12s;">
+        <div class="orbit-card" style="transform:rotate(95deg) translateY(-245px);">
+          <div class="orbit-counter-static" style="transform:rotate(-95deg);">
+            <div class="orbit-counter-spin" style="--dur:46s; --delay:-12s;">
+              <a href="aulas.html" class="orbit-card-face-wrap">
+                <div class="card-face">
+                  <div class="" class="photo"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
+                  
+                  <video width="100" height="100" controls>
+  <source src="assets/video/1.mp4"  type="video/mp4">
+  Seu navegador não suporta este formato de vídeo.
+</video>
+                  <div class="label">Aula</div>
+                  <div class="sub">visão geral</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="orbiter" style="--dur:39s; --delay:-5s;">
+        <div class="orbit-card" style="transform:rotate(150deg) translateY(-210px);">
+          <div class="orbit-counter-static" style="transform:rotate(-150deg);">
+            <div class="orbit-counter-spin" style="--dur:39s; --delay:-5s;">
+              <a href="projetos.html" class="orbit-card-face-wrap">
+                 <div class="card-face">
+                  <div class="" class="photo"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
+                  <img src="assets/b3.png" alt="#">
+                  <div class="label">Projetos</div>
+                  <div class="sub">visão geral</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="orbiter" style="--dur:52s; --delay:-20s;">
+        <div class="orbit-card" style="transform:rotate(230deg) translateY(-235px);">
+          <div class="orbit-counter-static" style="transform:rotate(-230deg);">
+            <div class="orbit-counter-spin" style="--dur:52s; --delay:-20s;">
+              <a href="linkedin.html" class="orbit-card-face-wrap">
+                 <div class="card-face">
+                  <div class="" class="photo"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
+                  <img src="assets/b6.png" alt="#">
+                  <div class="label">Linkedin</div>
+                  <div class="sub">visão geral</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="orbiter" style="--dur:42s; --delay:-30s;">
+        <div class="orbit-card" style="transform:rotate(305deg) translateY(-220px);">
+          <div class="orbit-counter-static" style="transform:rotate(-305deg);">
+            <div class="orbit-counter-spin" style="--dur:42s; --delay:-30s;">
+              <a href="curriculo.html" class="orbit-card-face-wrap">
+                <div class="card-face">
+                  <div class="" class="photo"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
+                  <img src="assets/b10.png" alt="#">
+                  <div class="label">Curriculo</div>
+                  <div class="sub">visão geral</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="laptop-wrap">
+        <div class="laptop-screen-body">
+          <div class="screen" id="screen">
+            <div class="screen-inner screen-dim" id="screenDim"></div>
+            <div class="screen-bright" id="screenBright"></div>
+            <div class="screen-scanline"></div>
+          </div>
+          <div class="screen-caption">
+            <span>~/devclub/carreira.js</span>
+            <span class="live"><span class="d"></span>build ok</span>
+          </div>
+        </div>
+        <div class="keyboard-base"></div>
+        <div class="laptop-shadow"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      
+
+<section class="depoimentos" style="padding: 3rem 1.5rem; background: #0A1F14;">
+  <h2 style="text-align:center; color:#C0DD97; font-size:24px; margin-bottom: 2rem;">
+    O que nossos alunos dizem
+  </h2>
+
+  <div class="depoimentos-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px; max-width:1000px; margin:0 auto;">
+
+    <div class="depoimento-card" style="background:#12301F; border-radius:12px; padding:1.5rem; text-align:center;">
+      <div class="depoimento-avatar" style="width:72px; height:72px; border-radius:50%; overflow:hidden; margin:0 auto 12px; border:2px solid #639922;">
+        <img src="assets/a6.png" alt="Depoimento de aluno" style="width:100%; height:100%; object-fit:cover; ">
+      </div>
+      <p style="color:#f2f3f0; font-size:14px; line-height:1.5; margin:0 0 10px;">"Mudou completamente minha carreira, hoje trabalho como dev."</p>
+      <p style="color:#97C459; font-size:13px; font-weight:600; margin:0;">Rafael C.</p>
+    </div>
+
+    <div class="depoimento-card" style="background:#12301F; border-radius:12px; padding:1.5rem; text-align:center;">
+      <div class="depoimento-avatar" style="width:72px; height:72px; border-radius:50%; overflow:hidden; margin:0 auto 12px; border:2px solid #639922;">
+        <img src="assets/a7.png" alt="Depoimento de aluna" style="width:100%; height:100%; object-fit:cover; ">
+      </div>
+      <p style="color:#EAF3DE; font-size:14px; line-height:1.5; margin:0 0 10px;">"As aulas são muito claras, sinto que evoluí rápido."</p>
+      <p style="color:#97C459; font-size:13px; font-weight:600; margin:0;">Mariana S.</p>
+    </div>
+
+    <div class="depoimento-card" style="background:#12301F; border-radius:12px; padding:1.5rem; text-align:center;">
+      <div class="depoimento-avatar" style="width:72px; height:72px; border-radius:50%; overflow:hidden; margin:0 auto 12px; border:2px solid #639922;">
+        <img src="assets/a8.png" alt="Depoimento de aluno" style="width:100%; height:100%; object-fit:cover; ">
+      </div>
+      <p style="color:#EAF3DE; font-size:14px; line-height:1.5; margin:0 0 10px;">"Recomendo muito, o suporte da equipe é excelente."</p>
+      <p style="color:#97C459; font-size:13px; font-weight:600; margin:0;">Diego A.</p>
+    </div>
+
+    <div class="depoimento-card" style="background:#12301F; border-radius:12px; padding:1.5rem; text-align:center;">
+      <div class="depoimento-avatar" style="width:72px; height:72px; border-radius:50%; overflow:hidden; margin:0 auto 12px; border:2px solid #639922;">
+        <img src="assets/a9.png" alt="Depoimento de aluna" style="width:100%; height:100%; object-fit:cover; ">
+      </div>
+      <p style="color:#EAF3DE; font-size:14px; line-height:1.5; margin:0 0 10px;">"Consegui meu primeiro emprego como dev logo depois do curso."</p>
+      <p style="color:#97C459; font-size:13px; font-weight:600; margin:0;">Julia L.</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="logo" style="font-size:15px;"><span class="gradient-text">DEV</span> CLUB</div>
+  <div>© 2026 DevClub. Todos os direitos reservados.</div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+  // ---------- typewriter effect on laptop screen ----------
+  const dimEl = document.getElementById('screenDim');
+  const brightEl = document.getElementById('screenBright');
+  const word = "DEV CLUB";
+  let i = 0, deleting = false;
+
+  function renderText(str, showCursor){
+    const cursor = showCursor ? '<span class="cursor-blink">|</span>' : '';
+    dimEl.innerHTML = str + cursor;
+    brightEl.innerHTML = str + cursor;
+  }
+  function tick(){
+    if(!deleting){
+      i++; renderText(word.slice(0, i), true);
+      if(i === word.length){ setTimeout(()=>{ deleting = true; tick(); }, 1400); return; }
+    } else {
+      i--; renderText(word.slice(0, i), true);
+      if(i === 0){ deleting = false; setTimeout(tick, 500); return; }
+    }
+    setTimeout(tick, deleting ? 90 : 150);
+  }
+  renderText('', true);
+  setTimeout(tick, 600);
+
+  // ---------- flashlight hover effect ----------
+  const screen = document.getElementById('screen');
+  screen.addEventListener('mousemove', (e)=>{
+    const rect = screen.getBoundingClientRect();
+    brightEl.style.setProperty('--mx', (((e.clientX-rect.left)/rect.width)*100) + '%');
+    brightEl.style.setProperty('--my', (((e.clientY-rect.top)/rect.height)*100) + '%');
+  });
+  screen.addEventListener('mouseleave', ()=>{
+    brightEl.style.setProperty('--mx', '50%');
+    brightEl.style.setProperty('--my', '-20%');
+  });
+  brightEl.style.setProperty('--my', '-20%');
+</script>
+</body>
+</html>

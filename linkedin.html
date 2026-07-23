@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treinamento para LinkedIn — DEV CLUB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .checklist{ display:flex; flex-direction:column; gap:14px; }
+  .check-item{ display:flex; gap:14px; align-items:flex-start; }
+  .check-mark{
+    flex:none; width:26px; height:26px; display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--border-bright); clip-path:polygon(5px 0,100% 0,100% 100%,0 100%,0 5px);
+    color:var(--green-1); font-family:'JetBrains Mono',monospace; font-size:13px;
+  }
+  .profile-photo-slot{ width:120px; height:120px; margin:0 auto 18px; border:1px dashed var(--border-dim); clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px); display:flex; align-items:center; justify-content:center; color:var(--text-faint); background:rgba(0,255,140,0.03); }
+  .profile-photo-slot svg{ width:34px; height:34px; stroke:var(--green-1); opacity:.6; }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="grid-lines"></div>
+<div class="scanlines"></div>
+
+<div class="hud-topbar">
+  <span class="seg live"><span class="d"></span>simulação disponível</span>
+  <span class="seg">taxa de resposta de recrutadores: alta</span>
+  <span class="spacer"></span>
+  <span class="seg">devclub.com.br/linkedin</span>
+</div>
+
+<header>
+  <div class="logo"><span class="gradient-text">DEV</span> CLUB</div>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+  <nav id="siteNav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="aulas.html">Aulas</a></li>
+      <li><a href="projetos.html">Projetos</a></li>
+      <li><a href="linkedin.html">LinkedIn</a></li>
+      <li><a href="curriculo.html">Currículo</a></li>
+    </ul>
+  </nav>
+  <a href="linkedin.html" class="btn btn-solid">Inscrever-se</a>
+</header>
+
+<div class="page-head">
+  <div class="eyebrow">treinamento para linkedin</div>
+  <h1>Seu perfil, otimizado como um <span class="gradient-text">projeto de verdade</span></h1>
+  <p>Revisamos headline, sobre, experiências e projetos — e simulamos a entrevista que vem logo depois do convite de recrutador.</p>
+</div>
+
+<section>
+  <div class="grid-2c" style="max-width:1100px; margin:0 auto;">
+
+    <!-- ---------- checklist panel ---------- -->
+    <div class="hud-panel">
+      <div class="profile-photo-slot">
+        <!-- Substitua por: <img src="sua-foto.jpg" alt="Foto de perfil"> -->
+         <img src="assets/b13.png" alt="Foto de perfil">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+      </div>
+      <h3 class="card-title">Checklist do seu perfil</h3>
+      <div class="checklist">
+        <div class="check-item"><span class="check-mark">✓</span><p class="dim"><strong style="color:var(--text);">Headline</strong> — mostra o que você faz, não só o cargo que quer.</p></div>
+        <div class="check-item"><span class="check-mark">✓</span><p class="dim"><strong style="color:var(--text);">Sobre</strong> — conta sua trajetória em poucos parágrafos, com foco em resultado.</p></div>
+        <div class="check-item"><span class="check-mark">✓</span><p class="dim"><strong style="color:var(--text);">Projetos</strong> — os principais projetos do portfólio linkados direto no perfil.</p></div>
+        <div class="check-item"><span class="check-mark">✓</span><p class="dim"><strong style="color:var(--text);">Competências</strong> — stack técnica validada por colegas e mentores.</p></div>
+      </div>
+    </div>
+
+    <!-- ---------- mock interview video panel ---------- -->
+    <div class="hud-frame">
+      <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+      <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+      <span class="readout tl mono">SIMULAÇÃO</span>
+      <span class="readout tr mono">AO VIVO</span>
+      <div class="media-slot">
+        <!-- Substitua por: <video controls poster="capa-entrevista.jpg"><source src="simulacao-entrevista.mp4" type="video/mp4"></video> -->
+         <video controls poster="assets/b16.png"><source src="assets/video/B15.mp4" type="video/mp4"></video>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        <span>Espaço reservado para o vídeo da simulação de entrevista</span>
+      </div>
+      <h3 class="card-title" style="margin-top:20px;">Entrevista simulada com mentor</h3>
+      <p class="dim">Praticamos perguntas técnicas e comportamentais reais, com feedback direto sobre como você se comunica e apresenta seus projetos.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo" style="font-size:15px;"><span class="gradient-text">DEV</span> CLUB</div>
+  <div>© 2026 DevClub. Todos os direitos reservados.</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aulas — DEV CLUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="bg-glow"></div>
+  <div class="grid-lines"></div>
+  <div class="scanlines"></div>
+
+  <div class="hud-topbar">
+    <span class="seg live"><span class="d"></span>trilha em andamento</span>
+    <span class="seg">módulo 01 de 04</span>
+    <span class="spacer"></span>
+    <span class="seg">devclub.com.br/aulas</span>
+  </div>
+
+  <header>
+    <div class="logo"><span class="gradient-text">DEV</span> CLUB</div>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+    <nav id="siteNav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aulas.html">Aulas</a></li>
+        <li><a href="projetos.html">Projetos</a></li>
+        <li><a href="linkedin.html">LinkedIn</a></li>
+        <li><a href="curriculo.html">Currículo</a></li>
+      </ul>
+    </nav>
+    <a href="linkedin.html" class="btn btn-solid">Inscrever-se</a>
+  </header>
+
+  <div class="page-head">
+    <div class="eyebrow">trilha prática</div>
+    <h1>Aulas que colocam você <span class="gradient-text">dentro do código</span>, não do tutorial</h1>
+    <p>Escolha um módulo na lista e assista a aula direto por aqui. Cada módulo tem vídeo, projeto guiado e suporte de
+      mentor.</p>
+  </div>
+
+  <section>
+    <div class="grid-2" data-tab-group>
+      <!-- ---------- module list ---------- -->
+      <div class="stack">
+        <div class="hud-tab active" data-tab-trigger="fundamentos">
+          <div>
+            <div class="t-label">01 · Fundamentos</div>
+            <div class="t-sub">HTML · CSS · LÓGICA</div>
+          </div>
+          <span class="t-mark">▶</span>
+        </div>
+        <div class="hud-tab" data-tab-trigger="javascript">
+          <div>
+            <div class="t-label">02 · JavaScript</div>
+            <div class="t-sub">DOM · EVENTOS · APIS</div>
+          </div>
+          <span class="t-mark">▶</span>
+        </div>
+        <div class="hud-tab" data-tab-trigger="backend">
+          <div>
+            <div class="t-label">03 · Back-end</div>
+            <div class="t-sub">NODE · BANCO DE DADOS</div>
+          </div>
+          <span class="t-mark">▶</span>
+        </div>
+        <div class="hud-tab" data-tab-trigger="carreira">
+          <div>
+            <div class="t-label">04 · Carreira</div>
+            <div class="t-sub">PORTFÓLIO · ENTREVISTA</div>
+          </div>
+          <span class="t-mark">▶</span>
+        </div>
+      </div>
+
+      <!-- ---------- video panel per module ---------- -->
+      <div>
+        <div data-tab-panel="fundamentos" style="display:block;">
+          <div class="hud-frame">
+            <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+            <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+            <span class="readout tl mono">AULA 01.1</span>
+            <span class="readout tr mono">42:10</span>
+            <div class="media-slot" style="border-style:solid; padding:0;">
+              <iframe src="https://www.youtube.com/embed/4asbw9g_Jso" width="1300" height="700"
+                title="Fundamentos da web"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen loading="lazy"></iframe>
+            </div>
+            <h3 class="card-title" style="margin-top:20px;">Fundamentos da web</h3>
+            <p class="dim">HTML semântico, CSS do zero e a lógica de programação que sustenta tudo o que vem depois. Fim
+              de módulo: sua primeira página publicada.</p>
+          </div>
+        </div>
+
+        <div data-tab-panel="javascript" style="display:none;">
+          <div class="hud-frame">
+            <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+            <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+            <span class="readout tl mono">AULA 02.1</span>
+            <span class="readout tr mono">51:40</span>
+            <div class="media-slot" style="border-style:solid; padding:0;">
+              <video src="/assets/video/v1.mp4" controls preload="metadata" playsinline></video>
+            </div>
+            <h3 class="card-title" style="margin-top:20px;">JavaScript na prática</h3>
+            <p class="dim">Manipulação de DOM, eventos e consumo de APIs reais. Fim de módulo: uma aplicação interativa
+              funcionando no navegador.</p>
+          </div>
+        </div>
+
+        <div data-tab-panel="backend" style="display:none;">
+          <div class="hud-frame">
+            <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+            <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+            <span class="readout tl mono">AULA 03.1</span>
+            <span class="readout tr mono">48:55</span>
+            <div class="media-slot" style="border-style:solid; padding:0;">
+              <iframe src="https://www.youtube.com/embed/4asbw9g_Jso" width="1300" height="700"
+                title="Back-end e banco de dados"
+                allow="accelerometer;  clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen loading="lazy"></iframe>
+            </div>
+            <h3 class="card-title" style="margin-top:20px;">Back-end e banco de dados</h3>
+            <p class="dim">APIs com Node, autenticação e persistência de dados. Fim de módulo: uma API completa
+              consumida pelo seu próprio front-end.</p>
+          </div>
+        </div>
+
+        <div data-tab-panel="carreira" style="display:none;">
+          <div class="hud-frame">
+            <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+            <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+            <span class="readout tl mono">AULA 04.1</span>
+            <span class="readout tr mono">36:20</span>
+            <div class="media-slot" style="border-style:solid; padding:0;">
+              <iframe src="https://www.youtube.com/embed/1aT2SMeJfMA" width="1300" height="700"
+                title="Preparação para a carreira"
+                allow="accelerometer;  clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen loading="lazy"></iframe>
+            </div>
+            <h3 class="card-title" style="margin-top:20px;">Preparação para a carreira</h3>
+            <p class="dim">Como estruturar seu portfólio e se preparar pra entrevista. Fim de módulo: você pronto pra
+              aplicar pra vaga real.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo" style="font-size:15px;"><span class="gradient-text">DEV</span> CLUB</div>
+    <div>© 2026 DevClub. Todos os direitos reservados.
+      Criado por Cleiton lima pereira
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // keep hud-tab active-state visuals in sync with the shared tab switcher
+    document.querySelectorAll('[data-tab-trigger]').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelectorAll('.hud-tab').forEach(el => el.classList.remove('active'));
+        t.classList.add('active');
+      });
+    });
+  </script>
+</body>
+
+</html>

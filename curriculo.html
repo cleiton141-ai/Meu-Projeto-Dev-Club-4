@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monte seu Currículo — DEV CLUB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .cv-field label{ display:block; font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:1px; color:var(--green-1); margin-bottom:8px; text-transform:uppercase; }
+  .cv-field input, .cv-field textarea{
+    width:100%; background:rgba(0,255,140,0.03); border:1px solid var(--border-dim); color:var(--text);
+    padding:11px 14px; font-family:'Inter',sans-serif; font-size:13.5px;
+    clip-path:polygon(8px 0,100% 0,100% 100%,0 100%,0 8px);
+  }
+  .cv-field input:focus, .cv-field textarea:focus{ outline:none; border-color:var(--border-bright); }
+  .cv-field textarea{ resize:vertical; min-height:90px; }
+  .cv-photo-slot{
+    width:100%; aspect-ratio:3/4; border:1px dashed var(--border-dim); background:rgba(0,255,140,0.03);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    color:var(--text-faint); text-align:center; padding:16px; cursor:pointer; position:relative; overflow:hidden;
+  }
+  .cv-photo-slot:hover{ border-color:var(--border-bright); }
+  .cv-photo-slot svg{ width:30px; height:30px; stroke:var(--green-1); opacity:.6; }
+  .cv-photo-slot img.preview{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; }
+  .cv-photo-slot.has-photo svg,
+  .cv-photo-slot.has-photo span{ display:none; }
+  .cv-photo-slot.has-photo img.preview{ display:block; }
+  .cv-photo-slot .remove-photo{
+    display:none; position:absolute; top:8px; right:8px; z-index:2; background:rgba(0,0,0,.65); color:#fff;
+    border:1px solid rgba(255,255,255,.4); font-family:'JetBrains Mono',monospace; font-size:10px;
+    padding:4px 8px; letter-spacing:.5px; cursor:pointer;
+  }
+  .cv-photo-slot.has-photo .remove-photo{ display:block; }
+
+  .field-error{ border-color:#ff5c5c !important; }
+  .form-msg{ font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.5px; margin-top:10px; min-height:16px; }
+  .form-msg.error{ color:#ff8080; }
+  .form-msg.ok{ color:var(--green-1); }
+
+  .btn[disabled]{ opacity:.5; pointer-events:none; }
+
+  /* ---------- printable résumé template (kept in the DOM, off-screen for reliable PDF export) ---------- */
+  #cvExportRoot{
+    position:fixed; left:0; top:0; width:800px; pointer-events:none;
+    transform:translateX(-99999px); overflow:hidden;
+  }
+  .cv-doc{
+    width:800px; min-height:1130px; background:#ffffff; color:#1c1c1c;
+    font-family:'Inter',sans-serif; box-sizing:border-box; padding:56px 60px;
+  }
+  @media print{
+    body *{ visibility:hidden !important; }
+    #cvExportRoot, #cvExportRoot *{ visibility:visible !important; }
+    #cvExportRoot{
+      position:static !important; transform:none !important; left:auto !important; top:auto !important;
+      width:100% !important; pointer-events:auto !important;
+    }
+    .cv-doc{ width:100% !important; min-height:auto !important; box-shadow:none !important; }
+    header, .hud-topbar, .page-head, section, footer, .form-msg{ display:none !important; }
+  }
+  .cv-doc .cv-head{ display:flex; gap:28px; align-items:flex-start; border-bottom:2px solid #12b76a; padding-bottom:22px; margin-bottom:26px; }
+  .cv-doc .cv-photo{ width:104px; height:104px; border-radius:6px; object-fit:cover; flex-shrink:0; border:2px solid #12b76a; }
+  .cv-doc .cv-name{ font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; color:#0b1a14; line-height:1.15; }
+  .cv-doc .cv-role{ font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:600; color:#0d9c5c; margin-top:6px; letter-spacing:.3px; }
+  .cv-doc .cv-contact{ font-size:12.5px; color:#555; margin-top:10px; line-height:1.6; word-break:break-word; }
+  .cv-doc .cv-section{ margin-bottom:22px; }
+  .cv-doc .cv-section-title{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase;
+    color:#0d9c5c; margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid #cdeedc;
+  }
+  .cv-doc .cv-body-text{ font-size:13px; line-height:1.7; color:#2a2a2a; white-space:pre-wrap; }
+  .cv-doc .cv-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .cv-doc .cv-tag{ font-size:12px; font-family:'JetBrains Mono',monospace; color:#0d9c5c; background:#e6faf0; border:1px solid #bdeed4; padding:5px 10px; border-radius:3px; }
+  .cv-doc .cv-project{ margin-bottom:14px; }
+  .cv-doc .cv-project-name{ font-weight:600; font-size:13.5px; color:#111; }
+  .cv-doc .cv-project-link{ font-size:12px; color:#0d9c5c; word-break:break-all; }
+  .cv-doc .cv-entry{ margin-bottom:14px; }
+  .cv-doc .cv-entry-title{ font-weight:600; font-size:13.5px; color:#111; }
+  .cv-doc .cv-entry-period{ font-size:11.5px; font-family:'JetBrains Mono',monospace; color:#0d9c5c; margin-top:2px; }
+  .cv-doc .cv-entry-desc{ font-size:12.5px; line-height:1.6; color:#3a3a3a; margin-top:5px; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="grid-lines"></div>
+<div class="scanlines"></div>
+
+<div class="hud-topbar">
+  <span class="seg live"><span class="d"></span>editor ativo</span>
+  <span class="seg">revisão de mentor incluída</span>
+  <span class="spacer"></span>
+  <span class="seg">devclub.com.br/curriculo</span>
+</div>
+
+<header>
+  <div class="logo"><span class="gradient-text">DEV</span> CLUB</div>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+  <nav id="siteNav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="aulas.html">Aulas</a></li>
+      <li><a href="projetos.html">Projetos</a></li>
+      <li><a href="linkedin.html">LinkedIn</a></li>
+      <li><a href="curriculo.html">Currículo</a></li>
+    </ul>
+  </nav>
+  <a href="linkedin.html" class="btn btn-solid">Inscrever-se</a>
+</header>
+
+<div class="page-head">
+  <div class="eyebrow">monte seu currículo</div>
+  <h1>Do <span class="gradient-text">zero ao PDF</span> pronto para enviar</h1>
+  <p>Preencha os campos abaixo. Estruturamos experiência, projetos e stack técnica no formato que passa pelo filtro de recrutamento — e chega até a entrevista.</p>
+</div>
+
+<section>
+  <div class="grid-2" style="max-width:1100px; margin:0 auto;">
+
+    <!-- ---------- photo + summary panel ---------- -->
+    <div class="hud-panel">
+      <div class="cv-photo-slot" id="photoSlot">
+        <button type="button" class="remove-photo" id="removePhotoBtn">remover</button>
+        <img class="preview" id="photoPreview" alt="Pré-visualização da foto">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Foto (opcional) — arraste uma imagem ou clique para enviar</span>
+        <input type="file" id="photoInput" accept="image/*" style="display:none;">
+      </div>
+      <div class="cv-field" style="margin-top:18px;">
+        <label>Nome completo</label>
+        <input type="text" id="cvNome" placeholder="Seu nome">
+      </div>
+      <div class="cv-field" style="margin-top:14px;">
+        <label>Cargo desejado</label>
+        <input type="text" id="cvCargo" placeholder="Ex: Desenvolvedor Front-end Jr.">
+      </div>
+      <div class="cv-field" style="margin-top:14px;">
+        <label>Contato</label>
+        <input type="text" id="cvContato" placeholder="E-mail · LinkedIn · GitHub">
+      </div>
+    </div>
+
+    <!-- ---------- experience / stack panel ---------- -->
+    <div class="stack">
+      <div class="hud-frame">
+        <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+        <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+        <span class="readout tl mono">SOBRE VOCÊ</span>
+        <div class="cv-field" style="margin-top:18px;">
+          <label>Resumo profissional</label>
+          <textarea id="cvResumo" placeholder="Duas ou três linhas contando sua trajetória e o que você busca."></textarea>
+        </div>
+      </div>
+
+      <div class="hud-frame">
+        <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+        <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+        <span class="readout tl mono">EXPERIÊNCIA PROFISSIONAL</span>
+        <div class="cv-field" style="margin-top:18px;">
+          <label>Experiência 1 — cargo, empresa e período</label>
+          <input type="text" id="cvExp1Titulo" placeholder="Ex: Estagiário de TI — Empresa X (2024 – atual)">
+        </div>
+        <div class="cv-field" style="margin-top:10px;">
+          <label>O que você fazia</label>
+          <textarea id="cvExp1Desc" placeholder="Ex: Manutenção de sistemas internos, suporte a usuários, pequenas automações."></textarea>
+        </div>
+        <div class="cv-field" style="margin-top:16px;">
+          <label>Experiência 2 — cargo, empresa e período</label>
+          <input type="text" id="cvExp2Titulo" placeholder="Ex: Freelancer — projetos próprios (2023 – 2024)">
+        </div>
+        <div class="cv-field" style="margin-top:10px;">
+          <label>O que você fazia</label>
+          <textarea id="cvExp2Desc" placeholder="Descreva brevemente as atividades."></textarea>
+        </div>
+      </div>
+
+      <div class="hud-frame">
+        <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+        <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+        <span class="readout tl mono">FORMAÇÃO ACADÊMICA</span>
+        <div class="cv-field" style="margin-top:18px;">
+          <label>Formação 1 — curso, instituição e período</label>
+          <input type="text" id="cvForm1" placeholder="Ex: Análise e Desenvolvimento de Sistemas — Faculdade X (2023 – 2025)">
+        </div>
+        <div class="cv-field" style="margin-top:14px;">
+          <label>Formação 2 / Curso extra — opcional</label>
+          <input type="text" id="cvForm2" placeholder="Ex: Formação DevClub — Desenvolvimento Web Full Stack (2026)">
+        </div>
+      </div>
+
+      <div class="hud-frame">
+        <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+        <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+        <span class="readout tl mono">STACK TÉCNICA</span>
+        <div class="cv-field" style="margin-top:18px;">
+          <label>Tecnologias e ferramentas</label>
+          <input type="text" id="cvStack" placeholder="Ex: HTML, CSS, JavaScript, React, Git">
+        </div>
+      </div>
+
+      <div class="hud-frame">
+        <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+        <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+        <span class="readout tl mono">PROJETOS EM DESTAQUE</span>
+        <div class="cv-field" style="margin-top:18px;">
+          <label>Projeto 1 — nome e link</label>
+          <input type="text" id="cvProjeto1" placeholder="Ex: E-commerce completo — github.com/...">
+        </div>
+        <div class="cv-field" style="margin-top:14px;">
+          <label>Projeto 2 — nome e link</label>
+          <input type="text" id="cvProjeto2" placeholder="Ex: Dashboard financeiro — github.com/...">
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <button type="button" class="btn btn-solid" id="generateBtn">Salvar PDF do Currículo</button>
+        <button type="button" class="btn btn-outline" id="mentorBtn">Enviar para Revisão de Mentor</button>
+      </div>
+      <div class="form-msg" id="formMsg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- template usado só para exportar o PDF, fica fora da tela -->
+<div id="cvExportRoot">
+  <div class="cv-doc" id="cvDoc">
+    <div class="cv-head">
+      <img class="cv-photo" id="docPhoto" style="display:none;">
+      <div>
+        <div class="cv-name" id="docNome">Seu nome</div>
+        <div class="cv-role" id="docCargo">Cargo desejado</div>
+        <div class="cv-contact" id="docContato">E-mail · LinkedIn · GitHub</div>
+      </div>
+    </div>
+
+    <div class="cv-section" id="docResumoSection">
+      <div class="cv-section-title">Resumo profissional</div>
+      <div class="cv-body-text" id="docResumo"></div>
+    </div>
+
+    <div class="cv-section" id="docExperienciaSection">
+      <div class="cv-section-title">Experiência profissional</div>
+      <div id="docExperiencia"></div>
+    </div>
+
+    <div class="cv-section" id="docFormacaoSection">
+      <div class="cv-section-title">Formação acadêmica</div>
+      <div id="docFormacao"></div>
+    </div>
+
+    <div class="cv-section" id="docStackSection">
+      <div class="cv-section-title">Stack técnica</div>
+      <div class="cv-tags" id="docStack"></div>
+    </div>
+
+    <div class="cv-section" id="docProjetosSection">
+      <div class="cv-section-title">Projetos em destaque</div>
+      <div id="docProjetos"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="logo" style="font-size:15px;"><span class="gradient-text">DEV</span> CLUB</div>
+  <div>© 2026 DevClub. Todos os direitos reservados.</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="script.js"></script>
+<script>
+(function(){
+  // ---------- referências dos campos do formulário ----------
+  var fields = {
+    nome: document.getElementById('cvNome'),
+    cargo: document.getElementById('cvCargo'),
+    contato: document.getElementById('cvContato'),
+    resumo: document.getElementById('cvResumo'),
+    stack: document.getElementById('cvStack'),
+    projeto1: document.getElementById('cvProjeto1'),
+    projeto2: document.getElementById('cvProjeto2'),
+    exp1Titulo: document.getElementById('cvExp1Titulo'),
+    exp1Desc: document.getElementById('cvExp1Desc'),
+    exp2Titulo: document.getElementById('cvExp2Titulo'),
+    exp2Desc: document.getElementById('cvExp2Desc'),
+    form1: document.getElementById('cvForm1'),
+    form2: document.getElementById('cvForm2')
+  };
+
+  var photoSlot = document.getElementById('photoSlot');
+  var photoInput = document.getElementById('photoInput');
+  var photoPreview = document.getElementById('photoPreview');
+  var removePhotoBtn = document.getElementById('removePhotoBtn');
+  var formMsg = document.getElementById('formMsg');
+  var photoDataUrl = null;
+
+  // ---------- upload e pré-visualização da foto ----------
+  photoSlot.addEventListener('click', function(e){
+    if (e.target === removePhotoBtn) return;
+    photoInput.click();
+  });
+
+  photoInput.addEventListener('change', function(){
+    var file = photoInput.files && photoInput.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      showMsg('Envie um arquivo de imagem (jpg, png...).', 'error');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      photoDataUrl = ev.target.result;
+      photoPreview.src = photoDataUrl;
+      photoSlot.classList.add('has-photo');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  removePhotoBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    photoDataUrl = null;
+    photoInput.value = '';
+    photoPreview.src = '';
+    photoSlot.classList.remove('has-photo');
+  });
+
+  // ---------- mensagens de status abaixo dos botões ----------
+  function showMsg(text, type){
+    formMsg.textContent = text;
+    formMsg.className = 'form-msg' + (type ? ' ' + type : '');
+  }
+
+  // ---------- valida os campos obrigatórios ----------
+  function validate(){
+    var required = ['nome', 'cargo', 'contato'];
+    var ok = true;
+    required.forEach(function(key){
+      var el = fields[key];
+      if (!el.value.trim()) {
+        el.classList.add('field-error');
+        ok = false;
+      } else {
+        el.classList.remove('field-error');
+      }
+    });
+    if (!ok) showMsg('Preencha nome, cargo e contato antes de continuar.', 'error');
+    return ok;
+  }
+
+  fields.nome && fields.nome.addEventListener('input', function(){ this.classList.remove('field-error'); });
+  fields.cargo && fields.cargo.addEventListener('input', function(){ this.classList.remove('field-error'); });
+  fields.contato && fields.contato.addEventListener('input', function(){ this.classList.remove('field-error'); });
+
+  // ---------- monta o template escondido com os dados preenchidos ----------
+  function fillTemplate(){
+    document.getElementById('docNome').textContent = fields.nome.value.trim() || 'Seu nome';
+    document.getElementById('docCargo').textContent = fields.cargo.value.trim() || 'Cargo desejado';
+    document.getElementById('docContato').textContent = fields.contato.value.trim();
+
+    var docPhoto = document.getElementById('docPhoto');
+    if (photoDataUrl) {
+      docPhoto.src = photoDataUrl;
+      docPhoto.style.display = 'block';
+    } else {
+      docPhoto.style.display = 'none';
+    }
+
+    var resumoSection = document.getElementById('docResumoSection');
+    var resumoVal = fields.resumo.value.trim();
+    document.getElementById('docResumo').textContent = resumoVal;
+    resumoSection.style.display = resumoVal ? '' : 'none';
+
+    var experienciaSection = document.getElementById('docExperienciaSection');
+    var experienciaWrap = document.getElementById('docExperiencia');
+    experienciaWrap.innerHTML = '';
+    [
+      { titulo: fields.exp1Titulo.value.trim(), desc: fields.exp1Desc.value.trim() },
+      { titulo: fields.exp2Titulo.value.trim(), desc: fields.exp2Desc.value.trim() }
+    ].filter(function(exp){ return exp.titulo; }).forEach(function(exp){
+      var block = document.createElement('div');
+      block.className = 'cv-entry';
+      var titleEl = document.createElement('div');
+      titleEl.className = 'cv-entry-title';
+      titleEl.textContent = exp.titulo;
+      block.appendChild(titleEl);
+      if (exp.desc) {
+        var descEl = document.createElement('div');
+        descEl.className = 'cv-entry-desc';
+        descEl.textContent = exp.desc;
+        block.appendChild(descEl);
+      }
+      experienciaWrap.appendChild(block);
+    });
+    experienciaSection.style.display = experienciaWrap.children.length ? '' : 'none';
+
+    var formacaoSection = document.getElementById('docFormacaoSection');
+    var formacaoWrap = document.getElementById('docFormacao');
+    formacaoWrap.innerHTML = '';
+    [fields.form1.value.trim(), fields.form2.value.trim()].filter(Boolean).forEach(function(txt){
+      var block = document.createElement('div');
+      block.className = 'cv-entry';
+      var titleEl = document.createElement('div');
+      titleEl.className = 'cv-entry-title';
+      titleEl.textContent = txt;
+      block.appendChild(titleEl);
+      formacaoWrap.appendChild(block);
+    });
+    formacaoSection.style.display = formacaoWrap.children.length ? '' : 'none';
+
+    var stackSection = document.getElementById('docStackSection');
+    var stackWrap = document.getElementById('docStack');
+    stackWrap.innerHTML = '';
+    var stackVal = fields.stack.value.trim();
+    if (stackVal) {
+      stackVal.split(',').map(function(s){ return s.trim(); }).filter(Boolean).forEach(function(item){
+        var tag = document.createElement('span');
+        tag.className = 'cv-tag';
+        tag.textContent = item;
+        stackWrap.appendChild(tag);
+      });
+      stackSection.style.display = '';
+    } else {
+      stackSection.style.display = 'none';
+    }
+
+    var projetosSection = document.getElementById('docProjetosSection');
+    var projetosWrap = document.getElementById('docProjetos');
+    projetosWrap.innerHTML = '';
+    [fields.projeto1.value.trim(), fields.projeto2.value.trim()].filter(Boolean).forEach(function(raw){
+      var parts = raw.split(' — ');
+      var nome = parts[0] ? parts[0].trim() : raw;
+      var link = parts[1] ? parts[1].trim() : '';
+      var block = document.createElement('div');
+      block.className = 'cv-project';
+      var nameEl = document.createElement('div');
+      nameEl.className = 'cv-project-name';
+      nameEl.textContent = nome;
+      block.appendChild(nameEl);
+      if (link) {
+        var linkEl = document.createElement('div');
+        linkEl.className = 'cv-project-link';
+        linkEl.textContent = link;
+        block.appendChild(linkEl);
+      }
+      projetosWrap.appendChild(block);
+    });
+    projetosSection.style.display = projetosWrap.children.length ? '' : 'none';
+  }
+
+  // ---------- gera e baixa o PDF ----------
+  var generateBtn = document.getElementById('generateBtn');
+  generateBtn.addEventListener('click', function(){
+    if (!validate()) return;
+    fillTemplate();
+    generateBtn.setAttribute('disabled', 'disabled');
+
+    var nomeArquivo = (fields.nome.value.trim() || 'curriculo').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+    try {
+      if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
+        throw new Error('jsPDF indisponível');
+      }
+
+      showMsg('Gerando seu PDF...', 'ok');
+      var doc = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+      var pageWidth = doc.internal.pageSize.getWidth();
+      var pageHeight = doc.internal.pageSize.getHeight();
+      var margin = 40;
+      var lineHeight = 16;
+      var y = 138;
+      var dark = [255, 255, 255];
+      var accent = [11, 162, 94];
+      var accentSoft = [234, 248, 240];
+      var text = [24, 29, 31];
+      var subtle = [102, 111, 118];
+
+      doc.setFillColor(245, 247, 246);
+      doc.rect(0, 0, pageWidth, 110, 'F');
+
+      doc.setDrawColor(accent[0], accent[1], accent[2]);
+      doc.setLineWidth(1.3);
+      doc.line(margin, 118, pageWidth - margin, 118);
+      doc.line(margin, 122, pageWidth - margin, 122);
+
+      doc.setTextColor(accent[0], accent[1], accent[2]);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(24);
+      doc.text(fields.nome.value.trim() || 'Seu nome', margin, 54);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11.5);
+      doc.setTextColor(text[0], text[1], text[2]);
+      doc.text(fields.cargo.value.trim() || 'Cargo desejado', margin, 74);
+      doc.text(fields.contato.value.trim() || 'Contato', margin, 90);
+
+      doc.setTextColor(text[0], text[1], text[2]);
+
+      if (photoDataUrl) {
+        try {
+          var imgX = pageWidth - margin - 74;
+          var imgY = 16;
+          var imageType = photoDataUrl.indexOf('data:image/png') !== -1 ? 'PNG' : 'JPEG';
+          doc.addImage(photoDataUrl, imageType, imgX, imgY, 74, 74);
+        } catch (imgError) {
+          console.warn('Foto não entrou no PDF:', imgError);
+        }
+      }
+
+      doc.setTextColor(text[0], text[1], text[2]);
+
+      function addSection(title, contentLines) {
+        if (!contentLines || !contentLines.length) return;
+
+        var measuredLines = [];
+        contentLines.forEach(function(line){
+          if (!line || !line.trim()) return;
+          measuredLines.push(doc.splitTextToSize(line, pageWidth - margin * 2));
+        });
+
+        var contentHeight = measuredLines.reduce(function(total, wrapped){ return total + wrapped.length * lineHeight; }, 0);
+        if (y + 46 + contentHeight > pageHeight - 28) {
+          doc.addPage();
+          y = margin;
+        }
+
+        doc.setFillColor(248, 251, 249);
+        doc.roundedRect(margin - 8, y - 10, pageWidth - margin * 2 + 16, contentHeight + 42, 8, 8, 'F');
+        doc.setFillColor(accent[0], accent[1], accent[2]);
+        doc.roundedRect(margin - 2, y - 3, 4, contentHeight + 22, 2, 2, 'F');
+
+        var labelWidth = doc.getTextWidth(title) + 18;
+        doc.setFillColor(accentSoft[0], accentSoft[1], accentSoft[2]);
+        doc.roundedRect(margin - 5, y - 16, labelWidth + 10, 24, 5, 5, 'F');
+        doc.setDrawColor(accent[0], accent[1], accent[2]);
+        doc.setLineWidth(0.5);
+        doc.roundedRect(margin - 5, y - 16, labelWidth + 10, 24, 5, 5, 'S');
+        doc.setTextColor(accent[0], accent[1], accent[2]);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.text(title, margin, y);
+        y += 26;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10.8);
+        doc.setTextColor(text[0], text[1], text[2]);
+
+        measuredLines.forEach(function(wrapped){
+          if (!wrapped || !wrapped.length) return;
+          if (y + wrapped.length * lineHeight > pageHeight - 28) {
+            doc.addPage();
+            y = margin;
+          }
+          doc.setTextColor(text[0], text[1], text[2]);
+          doc.text(wrapped, margin, y);
+          y += wrapped.length * lineHeight;
+        });
+        y += 12;
+      }
+
+      function addStackBadges(tags) {
+        if (!tags || !tags.length) return;
+        if (y > pageHeight - 70) {
+          doc.addPage();
+          y = margin;
+        }
+
+        var labelWidth = doc.getTextWidth('Stack técnica') + 18;
+        doc.setFillColor(accentSoft[0], accentSoft[1], accentSoft[2]);
+        doc.roundedRect(margin - 5, y - 16, labelWidth + 10, 24, 5, 5, 'F');
+        doc.setDrawColor(accent[0], accent[1], accent[2]);
+        doc.setLineWidth(0.5);
+        doc.roundedRect(margin - 5, y - 16, labelWidth + 10, 24, 5, 5, 'S');
+        doc.setTextColor(accent[0], accent[1], accent[2]);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.text('Stack técnica', margin, y);
+        y += 28;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10.4);
+        var tagX = margin;
+        var tagY = y;
+        tags.forEach(function(tagText){
+          var tagWidth = doc.getTextWidth(tagText) + 18;
+          if (tagX + tagWidth > pageWidth - margin) {
+            tagX = margin;
+            tagY += 24;
+            if (tagY > pageHeight - 32) {
+              doc.addPage();
+              tagX = margin;
+              tagY = margin;
+            }
+          }
+          doc.setFillColor(accentSoft[0], accentSoft[1], accentSoft[2]);
+          doc.roundedRect(tagX, tagY - 12, tagWidth, 18, 4, 4, 'F');
+          doc.setDrawColor(accent[0], accent[1], accent[2]);
+          doc.roundedRect(tagX, tagY - 12, tagWidth, 18, 4, 4, 'S');
+          doc.setTextColor(accent[0], accent[1], accent[2]);
+          doc.text(tagText, tagX + 9, tagY - 1);
+          tagX += tagWidth + 8;
+        });
+        y = tagY + 18;
+      }
+
+      addSection('Resumo profissional', [fields.resumo.value.trim()]);
+      addSection('Experiência profissional', [
+        fields.exp1Titulo.value.trim(),
+        fields.exp1Desc.value.trim(),
+        fields.exp2Titulo.value.trim(),
+        fields.exp2Desc.value.trim()
+      ].filter(Boolean));
+      addSection('Formação acadêmica', [fields.form1.value.trim(), fields.form2.value.trim()].filter(Boolean));
+      addStackBadges(fields.stack.value.trim() ? fields.stack.value.trim().split(',').map(function(item){ return item.trim(); }).filter(Boolean) : []);
+      addSection('Projetos em destaque', [fields.projeto1.value.trim(), fields.projeto2.value.trim()].filter(Boolean));
+
+      var pdfBlob = doc.output('blob');
+      var blobUrl = URL.createObjectURL(pdfBlob);
+      var link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'curriculo-' + nomeArquivo + '.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function(){ URL.revokeObjectURL(blobUrl); }, 1200);
+
+      showMsg('PDF gerado! Confira sua pasta de downloads.', 'ok');
+    } catch (error) {
+      console.error(error);
+      showMsg('Não foi possível gerar o PDF automaticamente. Tente novamente.', 'error');
+    } finally {
+      generateBtn.removeAttribute('disabled');
+    }
+  });
+
+  // ---------- envia um resumo do currículo para o mentor via WhatsApp ----------
+  var mentorBtn = document.getElementById('mentorBtn');
+  mentorBtn.addEventListener('click', function(){
+    if (!validate()) return;
+    var linhas = [
+      'Olá! Gostaria de revisão do meu currículo.',
+      'Nome: ' + fields.nome.value.trim(),
+      'Cargo desejado: ' + fields.cargo.value.trim(),
+      'Contato: ' + fields.contato.value.trim()
+    ];
+    if (fields.resumo.value.trim()) linhas.push('Resumo: ' + fields.resumo.value.trim());
+    if (fields.exp1Titulo.value.trim()) linhas.push('Experiência: ' + fields.exp1Titulo.value.trim());
+    if (fields.form1.value.trim()) linhas.push('Formação: ' + fields.form1.value.trim());
+    if (fields.stack.value.trim()) linhas.push('Stack: ' + fields.stack.value.trim());
+    var texto = encodeURIComponent(linhas.join('\n'));
+    window.open('https://wa.me/?text=' + texto, '_blank');
+  });
+})();
+</script>
+</body>
+</html>
